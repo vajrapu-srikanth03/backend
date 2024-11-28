@@ -88,11 +88,9 @@ pipeline {
             steps {
                 sh 'trivy image  --format template --template "@contrib/gitlab.tpl" -o container-scanning-report.html srikanthhg/backend:${appVersion}'
             }
-        }
+        } 
         
-
-        
-    }
+    
     post {
         always{
             echo "This sections runs always"
