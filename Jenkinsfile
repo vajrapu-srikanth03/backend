@@ -89,7 +89,7 @@ pipeline {
             }
         } 
         
-    
+    }
     post {
         always{
             echo "This sections runs always"
@@ -102,4 +102,5 @@ pipeline {
             echo "This section run when pipeline failure"
         }
     }
+
 }
