@@ -31,9 +31,11 @@ pipeline {
         }
         stage('Read the version') {
             steps {
-                def props = readJSON file: 'package.json'
-                appVersion = props.version
-                echo "App version: ${appVersion}"
+                script {
+                    def props = readJSON file: 'package.json'
+                    appVersion = props.version
+                    echo "App version: ${appVersion}"
+                }
             }
         }        
         stage('Install Dependencies') {
@@ -78,8 +80,7 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
+                sh 'docker build -t srikanthhg/$JOB_BASE_NAME:${appVersion}'
                 }
             }
         }
