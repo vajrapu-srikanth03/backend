@@ -82,7 +82,6 @@ pipeline {
             steps {
                 sh 'docker build -t srikanthhg/$JOB_BASE_NAME:${appVersion}'
                 }
-            }
         }
         stage('Image scan') {
             steps {
