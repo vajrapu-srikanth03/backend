@@ -22,6 +22,7 @@ pipeline {
         environment='dev'
         component = 'backend'
         SONAR_HOME= tool 'sonar-6.2' // scanner configuration
+        PATH = "/usr/bin:${env.PATH}"  // Force the pipeline to use /usr/bin/git
 
     }
     stages {
@@ -34,6 +35,7 @@ pipeline {
         stage('checkout') {
             steps {
                 // for public repository
+                sh 'git --version'  // If Git is installed at /usr/bin/git, use this path explicitly
                 git branch: 'main', url: 'https://github.com/vajrapu-srikanth03/backend.git'
                 // for private repository
                 // git branch: 'main', credentialsId: 'github-auth', url: 'https://github.com/vajrapu-srikanth03/backend.git'
