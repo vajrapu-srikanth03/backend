@@ -1,8 +1,10 @@
 pipeline {
     agent any
+    // agent {
+    //     label 'AGENT-1' // this will run on specific agent
+    // }
     tools {
-        // nodejs version 20
-        nodejs 'nodejs20' 
+        nodejs 'nodejs20' // nodejs version 20
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
@@ -11,8 +13,14 @@ pipeline {
         //retry(1)
     }
     environment {
-        appVersion=''
-        SONAR_HOME= tool 'Sonar-scanner'
+        DEBUG='true'
+        appVersion=''  // this will become global, we can use across pipeline
+        region='us-east-1'
+        account_id='608782704145'
+        project='expense'
+        environment='dev'
+        SONAR_HOME= tool 'sonar-6.0' // scanner configuration
+
     }
     stages {
         stage('clean workspace') {
@@ -35,6 +43,7 @@ pipeline {
                     def props = readJSON file: 'package.json'
                     appVersion = props.version
                     echo "App version: ${appVersion}"
+                    echo "${JOB_BASE_NAME}"
                 }
             }
         }        
@@ -45,8 +54,10 @@ pipeline {
         }
         stage('SonarQube Code Analysis'){
             steps{
+                 // sonar server injection
                 withSonarQubeEnv('Sonar-scanner'){
                     sh '$SONAR_HOME/bin/sonar-scanner'
+                    //generic scanner, it automatically understands the language and provide scan results
                 }
             }
         }
@@ -85,9 +96,30 @@ pipeline {
         }
         stage('Image scan') {
             steps {
-                sh 'trivy image  --format template --template "@contrib/gitlab.tpl" -o container-scanning-report.html srikanthhg/backend:${appVersion}'
+                //sh 'trivy image --format template --template "@contrib/gitlab.tpl" -o container-scanning-report.html srikanthhg/backend:${appVersion}'
+                sh 'trivy image --format table srikanthhg/$JOB_BASE_NAME:${appVersion}'
             }
-        } 
+        }
+        stage('push image to dockerhub') {
+            steps {
+                sh 'docker push srikanthhg/$JOB_BASE_NAME:${appVersion}'
+            }
+        }
+        stage('push image to AWS ECR') {
+            steps {
+                withAWS(region: 'us-east-1', credentials: 'aws-ecr') {
+                    sh 'aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker tag srikanthhg/$JOB_BASE_NAME:${appVersion} ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}'
+                    sh 'docker push ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}'
+                }
+            }
+        }
+        stage('push image to Azure ACR') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'azure-acr', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                }
+            }
+        }
         
     }
     post {
