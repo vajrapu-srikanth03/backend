@@ -26,12 +26,12 @@ pipeline {
 
     }
     stages {
-        stage('clean workspace') {
-            steps {
-                // Clean the workspace before starting the build
-                cleanWs()
-            }
-        }
+        // stage('clean workspace') {
+        //     steps {
+        //         // Clean the workspace before starting the build
+        //         cleanWs()
+        //     }
+        // }
         stage('checkout') {
             steps {
                 // for public repository
