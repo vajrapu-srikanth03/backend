@@ -5,6 +5,7 @@ pipeline {
     // }
     tools {
         nodejs 'nodejs20' // nodejs version 20
+        git 'git' // git tool
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
@@ -26,7 +27,7 @@ pipeline {
     stages {
         stage('clean workspace') {
             steps {
-                // Clean before build
+                // Clean the workspace before starting the build
                 cleanWs()
             }
         }
@@ -56,7 +57,7 @@ pipeline {
         stage('SonarQube Code Analysis'){
             steps{
                  // sonar server injection
-                withSonarQubeEnv('Sonar-scanner'){
+                withSonarQubeEnv('sonar-6.0'){
                     sh '$SONAR_HOME/bin/sonar-scanner'
                     //generic scanner, it automatically understands the language and provide scan results
                 }
@@ -88,6 +89,14 @@ pipeline {
                 #snyk test it will fail the pipeline
                 snyk monitor --org=vajrapu-srikanth02
                 """
+            }
+        }
+            stage('Build') {
+            steps {
+                script {
+                    // Transpile TypeScript, bundle with Webpack, or other build tools
+                    sh 'npm run build'
+                }
             }
         }
         stage('Docker build') {
