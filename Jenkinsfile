@@ -35,7 +35,6 @@ pipeline {
         stage('checkout') {
             steps {
                 // for public repository
-                sh 'git --version'  // If Git is installed at /usr/bin/git, use this path explicitly
                 git branch: 'main', url: 'https://github.com/vajrapu-srikanth03/backend.git'
                 // for private repository
                 // git branch: 'main', credentialsId: 'github-auth', url: 'https://github.com/vajrapu-srikanth03/backend.git'
@@ -47,7 +46,6 @@ pipeline {
                     def props = readJSON file: 'package.json'
                     appVersion = props.version
                     echo "App version: ${appVersion}"
-                    echo "${JOB_BASE_NAME}"
                 }
             }
         }        
@@ -56,22 +54,22 @@ pipeline {
                 sh 'npm install'
             }
         }
-        // stage('SonarQube Code Analysis'){
-        //     steps{
-        //          // sonar server injection
-        //         withSonarQubeEnv('sonar-6.2'){
-        //             sh '$SONAR_HOME/bin/sonar-scanner'
-        //             //generic scanner, it automatically understands the language and provide scan results
-        //         }
-        //     }
-        // }
-        // stage('Quality Gate') {
-        //     steps {
-        //       timeout(time: 5, unit: 'MINUTES') {
-        //         waitForQualityGate abortPipeline: true
-        //       }
-        //     }
-        // }
+        stage('SonarQube Code Analysis'){
+            steps{
+                 // sonar server injection
+                withSonarQubeEnv('sonar-6.2'){
+                    sh '$SONAR_HOME/bin/sonar-scanner'
+                    //generic scanner, it automatically understands the language and provide scan results
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+              timeout(time: 5, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+              }
+            }
+        }
         // stage("Trivy filesystem Scan"){
         //     steps{
         //         sh "trivy fs --format table -o trivy-fs-report.html ."
