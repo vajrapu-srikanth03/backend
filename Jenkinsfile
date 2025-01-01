@@ -19,6 +19,7 @@ pipeline {
         account_id='608782704145'
         project='expense'
         environment='dev'
+        component = 'backend'
         SONAR_HOME= tool 'sonar-6.0' // scanner configuration
 
     }
