@@ -21,7 +21,7 @@ pipeline {
         project='expense'
         environment='dev'
         component = 'backend'
-        SONAR_HOME= tool 'sonar-6.0' // scanner configuration
+        SONAR_HOME= tool 'sonar-6.2' // scanner configuration
 
     }
     stages {
@@ -57,7 +57,7 @@ pipeline {
         stage('SonarQube Code Analysis'){
             steps{
                  // sonar server injection
-                withSonarQubeEnv('sonar-6.0'){
+                withSonarQubeEnv('sonar-6.2'){
                     sh '$SONAR_HOME/bin/sonar-scanner'
                     //generic scanner, it automatically understands the language and provide scan results
                 }
