@@ -31,14 +31,14 @@ pipeline {
                 cleanWs()
             }
         }
-        // stage('checkout') {
-        //     steps {
-        //         // for public repository
-        //         git branch: 'main', url: 'https://github.com/vajrapu-srikanth03/backend.git'
-        //         // for private repository
-        //         // git branch: 'main', credentialsId: 'github-auth', url: 'https://github.com/vajrapu-srikanth03/argocd-expense.git'
-        //     }
-        // }
+        stage('checkout') {
+            steps {
+                // for public repository
+                git branch: 'main', url: 'https://github.com/vajrapu-srikanth03/backend.git'
+                // for private repository
+                // git branch: 'main', credentialsId: 'github-auth', url: 'https://github.com/vajrapu-srikanth03/backend.git'
+            }
+        }
         stage('Read the version') {
             steps {
                 script {
