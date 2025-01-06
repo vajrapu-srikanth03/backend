@@ -62,7 +62,7 @@ pipeline {
             steps{
                  // sonar server injection
                 withSonarQubeEnv('sonar-6.2'){
-                    sh 'sonar-scanner \
+                    sh '$SONAR_HOME/bin/sonar-scanner \
                     -Dsonar.organization=vajrapu-srikanth03 \
                     -Dsonar.projectKey=vajrapu-srikanth03_backend \
                     -Dsonar.sources=. \
