@@ -94,7 +94,7 @@ pipeline {
             steps{
                 snykSecurity(
                 snykInstallation: 'snyk',
-                snykTokenId: 'SNYK_TOKEN',
+                snykTokenId: '$SNYK_TOKEN',
                 sh 'snyk monitor --org=expense'
                 )
   
