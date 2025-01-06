@@ -81,7 +81,7 @@ pipeline {
             steps{
                 snykSecurity(
                     snykInstallation: 'snyk',
-                    snykTokenid: 'SNYK_TOKEN',
+                    snykTokenid: '4290f677-9a6b-4e6c-b0fc-f551763382f0',
                     snykMonitor: true
                 )
             }
