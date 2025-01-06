@@ -81,7 +81,10 @@ pipeline {
             steps{
                 snykSecurity(
                     snykInstallation: 'snyk',
-                    snykTokenId: 'SNYK_TOKEN'
+                    snykTokenId: '4290f677-9a6b-4e6c-b0fc-f551763382f0',
+                    targetFile: 'package.json',
+                    organisation: 'expense',
+                    projectName: 'backend'
                 )
             }
         }
