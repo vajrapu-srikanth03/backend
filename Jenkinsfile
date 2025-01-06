@@ -24,7 +24,7 @@ pipeline {
         component = 'backend'
         SONAR_HOME= tool 'sonar-6.2' // scanner configuration servername and scanner name both should be same
         PATH = "/usr/bin:${env.PATH}"  // Force the pipeline to use /usr/bin/git
-
+        SNYK_TOKEN = credentials('snyk-token')
     }
     stages {
         stage('clean workspace') {
@@ -79,9 +79,16 @@ pipeline {
         // }
         stage("Dependency Check using Snyk"){
             steps{
-                // Perform security vulnerability scanning using Snyk
-                    snykSecurityScan organization: 'vajrapu-srikanth03', projectName: 'backend', snykInstallation: 'snyk', snykTokenId: 'snyk-token', targetFile: 'package.json'
+                script {
+                    snykSecurity(
+                        organization: 'vajrapu-srikanth03',
+                        projectName: 'backend',
+                        snykInstallation: 'snyk',
+                        snykTokenId: env.SNYK_TOKEN,
+                        
+                    )
                 }
+                
             }
         }
         // stage("Trivy filesystem Scan"){
