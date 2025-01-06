@@ -80,7 +80,7 @@ pipeline {
         stage("Dependency Check using Snyk"){
             steps{
                 snykSecurity(
-                    organization: 'vajrapu-srikanth03',
+                    organisation: 'vajrapu-srikanth03',
                     projectName: 'backend',
                     snykInstallation: 'snyk',
                     snykTokenId: 'snyk-token',
