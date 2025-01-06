@@ -95,8 +95,6 @@ pipeline {
                 withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
                     sh """
                     snyk --version
-                    snyk auth $SNYK_TOKEN
-                    #snyk test it will fail the pipeline
                     snyk monitor backend --org=expense
                     """
                 } 
