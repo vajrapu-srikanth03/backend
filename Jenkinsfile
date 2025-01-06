@@ -81,8 +81,9 @@ pipeline {
             steps{
                 snykSecurity(
                     snykInstallation: 'snyk',
-                    command: 'test', // Use the appropriate Snyk command ('test', 'monitor', etc.)
-                    snykToken: credentials('SNYK_TOKEN') // Use the credentials ID for the Snyk token
+                    snykTokenid: 'SNYK_TOKEN',
+                    snykTest: true
+                    snykMonitor: true
                 )
             }
         }
