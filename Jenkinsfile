@@ -94,9 +94,14 @@ pipeline {
             steps{
                 snykSecurity(
                 snykInstallation: 'snyk',
-                snykTokenId: '$SNYK_TOKEN'
+                snykTokenId: 'SNYK_TOKEN'
                 )
-  
+                sh """
+                snyk --version
+                #snyk auth $SNYK_TOKEN
+                #snyk test it will fail the pipeline
+                snyk monitor --org=expense
+                """
             }
         }
         // stage("Trivy filesystem Scan"){
