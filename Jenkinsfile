@@ -62,7 +62,7 @@ pipeline {
         // stage('Quality Gate') {
         //     steps {
         //       timeout(time: 5, unit: 'MINUTES') {
-        //         waitForQualityGate abortPipeline: true
+        //         waitForQualityGate abortPipeline: true, credentialsId: 'Sonar-token'
         //       }
         //     }
         // }
@@ -71,23 +71,23 @@ pipeline {
                 sh 'npm install'
             }
         }
-        // stage("OWASP Dependency Check"){
-        //     steps{
-        //         dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
-        //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //     }
-        // }
-        stage("Dependency Check using Snyk"){
+        stage("OWASP Dependency Check"){
             steps{
-                snykSecurity(
-                    organisation: 'vajrapu-srikanth03',
-                    projectName: 'backend',
-                    snykInstallation: 'snyk',
-                    snykTokenId: 'snyk-token',
-                    targetFile: 'package.json',
-                )
+                dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
+        // stage("Dependency Check using Snyk"){
+        //     steps{
+        //         snykSecurity(
+        //             organisation: 'vajrapu-srikanth03',
+        //             projectName: 'backend',
+        //             snykInstallation: 'snyk',
+        //             snykTokenId: 'snyk-token',
+        //             targetFile: 'package.json',
+        //         )
+        //     }
+        // }
         // stage("Trivy filesystem Scan"){
         //     steps{
         //         sh "trivy fs --format table -o trivy-fs-report.html ."
