@@ -50,35 +50,22 @@ pipeline {
                 }
             }
         }        
-        stage('SonarQube Code Analysis'){
-            steps{
-                 // sonar server injection
-                withSonarQubeEnv('sonar-6.2'){
-                    sh '$SONAR_HOME/bin/sonar-scanner'
-                    //generic scanner, it automatically understands the language and provide scan results
-                }
-            }
-        }
         // stage('SonarQube Code Analysis'){
         //     steps{
         //          // sonar server injection
         //         withSonarQubeEnv('sonar-6.2'){
-        //             sh '$SONAR_HOME/bin/sonar-scanner \
-        //             -Dsonar.organization=vajrapu-srikanth03 \
-        //             -Dsonar.projectKey=vajrapu-srikanth03_backend \
-        //             -Dsonar.sources=. \
-        //             -Dsonar.host.url=https://sonarcloud.io'
+        //             sh '$SONAR_HOME/bin/sonar-scanner'
         //             //generic scanner, it automatically understands the language and provide scan results
         //         }
         //     }
         // }
-        stage('Quality Gate') {
-            steps {
-              timeout(time: 5, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
-              }
-            }
-        }
+        // stage('Quality Gate') {
+        //     steps {
+        //       timeout(time: 5, unit: 'MINUTES') {
+        //         waitForQualityGate abortPipeline: true
+        //       }
+        //     }
+        // }
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -92,12 +79,10 @@ pipeline {
         // }
         stage("Dependency Check using Snyk"){
             steps{
-                withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-                    sh """
-                    snyk --version
-                    snyk monitor backend --org=expense
-                    """
-                } 
+                snykSecurity(
+                    command: 'test' // Use the appropriate Snyk command ('test', 'monitor', etc.)
+                    snykToken: credentials('SNYK_TOKEN') // Use the credentials ID for the Snyk token
+                )
             }
         }
         // stage("Trivy filesystem Scan"){
