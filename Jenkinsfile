@@ -6,6 +6,7 @@ pipeline {
     tools {
         nodejs 'nodejs20' // nodejs version 20
         git 'git' // git tool
+        snyk 'snyk' // snyk tool
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
@@ -91,12 +92,12 @@ pipeline {
         // }
         stage("Dependency Check using Snyk"){
             steps{
-                sh """
-                snyk --version
-                snyk auth $SNYK_TOKEN
-                #snyk test it will fail the pipeline
-                snyk monitor --org=expense
-                """
+                snykSecurity(
+                snykInstallation: 'snyk',
+                snykTokenId: 'SNYK_TOKEN',
+                sh 'snyk monitor --org=expense'
+                )
+  
             }
         }
         // stage("Trivy filesystem Scan"){
