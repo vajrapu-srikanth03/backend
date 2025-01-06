@@ -80,7 +80,8 @@ pipeline {
         stage("Dependency Check using Snyk"){
             steps{
                 snykSecurity(
-                    command: 'test' // Use the appropriate Snyk command ('test', 'monitor', etc.)
+                    snykInstallation: 'snyk',
+                    command: 'test', // Use the appropriate Snyk command ('test', 'monitor', etc.)
                     snykToken: credentials('SNYK_TOKEN') // Use the credentials ID for the Snyk token
                 )
             }
