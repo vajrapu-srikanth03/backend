@@ -26,12 +26,12 @@ pipeline {
 
     }
     stages {
-        // stage('clean workspace') {
-        //     steps {
-        //         // Clean the workspace before starting the build
-        //         cleanWs()
-        //     }
-        // }
+        stage('clean workspace') {
+            steps {
+                // Clean the workspace before starting the build
+                cleanWs()
+            }
+        }
         stage('checkout') {
             steps {
                 // for public repository
@@ -49,11 +49,6 @@ pipeline {
                 }
             }
         }        
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
         stage('SonarQube Code Analysis'){
             steps{
                  // sonar server injection
@@ -70,27 +65,33 @@ pipeline {
               }
             }
         }
-        // stage("Trivy filesystem Scan"){
-        //     steps{
-        //         sh "trivy fs --format table -o trivy-fs-report.html ."
-        //     }
-        // }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
         // stage("OWASP Dependency Check"){
         //     steps{
         //         dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
         //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
         //     }
         // }
-        // stage("Dependency Check using Snyk"){
+        stage("Dependency Check using Snyk"){
+            steps{
+                sh """
+                snyk --version
+                snyk auth $SNYK_TOKEN
+                #snyk test it will fail the pipeline
+                snyk monitor --org=expense
+                """
+            }
+        }
+        // stage("Trivy filesystem Scan"){
         //     steps{
-        //         sh """
-        //         snyk --version
-        //         snyk auth $SNYK_TOKEN
-        //         #snyk test it will fail the pipeline
-        //         snyk monitor --org=vajrapu-srikanth02
-        //         """
+        //         sh "trivy fs --format table -o trivy-fs-report.html ."
         //     }
         // }
+
         //     stage('Build') {
         //     steps {
         //         script {
