@@ -79,7 +79,9 @@ pipeline {
         // }
         stage("Dependency Check using Snyk"){
             steps{
-                snykSecurity organisation: 'expense', projectName: 'backend', snykInstallation: 'snyk', snykTokenId: '4290f677-9a6b-4e6c-b0fc-f551763382f0', targetFile: 'package.json'
+                // Perform security vulnerability scanning using Snyk
+                    snykSecurityScan organization: 'vajrapu-srikanth03', projectName: 'backend', snykInstallation: 'snyk', snykTokenId: 'snyk-token', targetFile: 'package.json'
+                }
             }
         }
         // stage("Trivy filesystem Scan"){
