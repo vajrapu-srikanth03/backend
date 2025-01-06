@@ -5,7 +5,7 @@ pipeline {
     // }
     tools {
         nodejs 'nodejs20' // nodejs version 20
-        // git 'git' // git tool
+        git 'git' // git tool
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
