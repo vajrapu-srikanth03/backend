@@ -82,7 +82,6 @@ pipeline {
                 snykSecurity(
                     snykInstallation: 'snyk',
                     snykTokenid: 'SNYK_TOKEN',
-                    snykTest: true
                     snykMonitor: true
                 )
             }
