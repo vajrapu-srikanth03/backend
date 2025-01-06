@@ -49,11 +49,24 @@ pipeline {
                 }
             }
         }        
+        // stage('SonarQube Code Analysis'){
+        //     steps{
+        //          // sonar server injection
+        //         withSonarQubeEnv('sonar-6.2'){
+        //             sh '$SONAR_HOME/bin/sonar-scanner'
+        //             //generic scanner, it automatically understands the language and provide scan results
+        //         }
+        //     }
+        // }
         stage('SonarQube Code Analysis'){
             steps{
                  // sonar server injection
                 withSonarQubeEnv('sonar-6.2'){
-                    sh '$SONAR_HOME/bin/sonar-scanner'
+                    sh 'sonar-scanner \
+                    -Dsonar.organization=vajrapu-srikanth03 \
+                    -Dsonar.projectKey=vajrapu-srikanth03_backend \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=https://sonarcloud.io'
                     //generic scanner, it automatically understands the language and provide scan results
                 }
             }
