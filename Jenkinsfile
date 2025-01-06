@@ -79,11 +79,10 @@ pipeline {
         // }
         stage("Dependency Check using Snyk"){
             steps{
-                withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
-                    sh 'snyk --version'
-                    sh 'snyk auth $SNYK_TOKEN'
-                    sh 'snyk test'
-                }
+                snykSecurity(
+                    snykInstallation: 'snyk',
+                    snykTokenId: 'snyk-token'
+                )
             }
         }
         // stage("Trivy filesystem Scan"){
