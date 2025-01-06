@@ -86,6 +86,7 @@ pipeline {
                     snykTokenId: 'snyk-token',
                     targetFile: 'package.json',
                 )
+                sh 'snyk monitor --file=package.json'
             }
         }
         // stage("Trivy filesystem Scan"){
