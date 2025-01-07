@@ -6,7 +6,7 @@ pipeline {
     tools {
         nodejs 'nodejs20' // nodejs version 20
         git 'git' // git tool
-        snyk 'snyk' // snyk tool
+        //snyk 'snyk' // snyk tool
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
