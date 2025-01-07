@@ -10,7 +10,10 @@ RUN addgroup -S expense && adduser -S expense -G expense
 COPY --from=builder /opt/server /opt/server
 RUN chown -R expense:expense /opt/server
 EXPOSE 8080
+
+# need to be removed
+ENV DB_HOST="mysql"  
+
 USER expense
 CMD ["node", "index.js"]
 
-# ENV DB_HOST="mysql"

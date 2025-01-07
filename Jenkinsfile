@@ -71,12 +71,12 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage("OWASP Dependency Check"){
-            steps{
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
+        // stage("OWASP Dependency Check"){
+        //     steps{
+        //         dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+        //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+        //     }
+        // }
         // stage("Dependency Check using Snyk"){
         //     steps{
         //         snykSecurity(
@@ -88,11 +88,11 @@ pipeline {
         //         )
         //     }
         // }
-        // stage("Trivy filesystem Scan"){
-        //     steps{
-        //         sh "trivy fs --format table -o trivy-fs-report.html ."
-        //     }
-        // }
+        stage("Trivy filesystem Scan"){
+            steps{
+                sh "trivy fs --format table -o trivy-fs-report.html ."
+            }
+        }
 
         //     stage('Build') {
         //     steps {
