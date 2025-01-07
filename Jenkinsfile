@@ -23,7 +23,7 @@ pipeline {
         environment='dev'
         component = 'backend'
         //SONAR_HOME= tool 'sonar-6.2' // scanner configuration servername and scanner name both should be same
-        PATH = "/usr/bin:${env.PATH}"  // Force the pipeline to use /usr/bin/git
+        //PATH = "/usr/bin:${env.PATH}"  // Force the pipeline to use /usr/bin/git
     
     }
     stages {
