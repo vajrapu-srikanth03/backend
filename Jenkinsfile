@@ -102,17 +102,17 @@ pipeline {
                 }
             }
         }
-        // stage('Docker build') {
-        //     steps {
-        //         sh 'docker build -t srikanthhg/$JOB_BASE_NAME:${appVersion}'
-        //         }
-        // }
-        // stage('Image scan') {
-        //     steps {
-        //         //sh 'trivy image --format template --template "@contrib/gitlab.tpl" -o container-scanning-report.html srikanthhg/backend:${appVersion}'
-        //         sh 'trivy image --format table srikanthhg/$JOB_BASE_NAME:${appVersion}'
-        //     }
-        // }
+        stage('Docker build') {
+            steps {
+                sh 'docker build -t srikanthhg/$JOB_BASE_NAME:${appVersion}'
+                }
+        }
+        stage('Image scan') {
+            steps {
+                //sh 'trivy image --format template --template "@contrib/gitlab.tpl" -o container-scanning-report.html srikanthhg/backend:${appVersion}'
+                sh 'trivy image --format table srikanthhg/$JOB_BASE_NAME:${appVersion}'
+            }
+        }
         // stage('push image to dockerhub') {
         //     steps {
         //         sh 'docker push srikanthhg/$JOB_BASE_NAME:${appVersion}'
