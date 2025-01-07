@@ -94,14 +94,14 @@ pipeline {
             }
         }
 
-        //     stage('Build') {
-        //     steps {
-        //         script {
-        //             // Transpile TypeScript, bundle with Webpack, or other build tools
-        //             sh 'npm run build'
-        //         }
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                script {
+                    // Transpile TypeScript, bundle with Webpack, or other build tools
+                    sh 'npm run build'
+                }
+            }
+        }
         // stage('Docker build') {
         //     steps {
         //         sh 'docker build -t srikanthhg/$JOB_BASE_NAME:${appVersion}'
