@@ -22,9 +22,9 @@ pipeline {
         project='expense'
         environment='dev'
         component = 'backend'
-        SONAR_HOME= tool 'sonar-6.2' // scanner configuration servername and scanner name both should be same
+        //SONAR_HOME= tool 'sonar-6.2' // scanner configuration servername and scanner name both should be same
         PATH = "/usr/bin:${env.PATH}"  // Force the pipeline to use /usr/bin/git
-        //SNYK_TOKEN = credentials('snyk-token')
+    
     }
     stages {
         stage('clean workspace') {
