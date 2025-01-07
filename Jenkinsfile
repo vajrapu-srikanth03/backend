@@ -104,7 +104,7 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                sh 'docker build -t srikanthhg/$JOB_BASE_NAME:${appVersion}'
+                sh 'docker build -t srikanthhg/$JOB_BASE_NAME:${appVersion}' .
                 }
         }
         stage('Image scan') {
