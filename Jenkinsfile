@@ -104,7 +104,10 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                docker.build("backend:${appVersion}")
+                script {
+                    // Build the Docker image
+                    docker.build("backend:${appVersion}")
+                }
             }
         }
         stage('Image scan') {
