@@ -106,7 +106,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image sh 'docker build -t srikanthhg/backend:${appVersion} .'
-                    docker.build("srikanthhg/backend:${appVersion}")
+                    def customImage = docker.build("srikanthhg/backend:${appVersion}")
                 }
             }
         }
@@ -121,7 +121,7 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKERHUB')]) {
                         docker login -u srikanthhg -p ${DOCKERHUB}
-                        docker.push()
+                        customImage.push()
                     }
                 }
                 //sh 'docker push srikanthhg/$JOB_BASE_NAME:${appVersion}'
