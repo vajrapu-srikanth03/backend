@@ -23,6 +23,7 @@ pipeline {
         environment='dev'
         component = 'backend'
         def customImage = ''
+        DOCKER_TOKEN = credentials('dockerhub')
         //SONAR_HOME= tool 'sonar-6.2' // scanner configuration servername and scanner name both should be same
         //PATH = "/usr/bin:${env.PATH}"  // Force the pipeline to use /usr/bin/git
     
@@ -120,8 +121,8 @@ pipeline {
         stage('push image to dockerhub') {
             steps {
                 script {
-                    
-                    withDockerRegistry(credentialsId: 'docker-auth', toolName: 'docker') {
+                    sh "echo ${DOCKER_TOKEN} | docker login --username srikanthhg --password-stdin"
+                    {
                     customImage.push("${appVersion}")
                     }
                 }
