@@ -105,7 +105,7 @@ pipeline {
         stage('Docker build') {
             steps {
                 script {
-                    // Build the Docker image
+                    // Build the Docker image sh 'docker build -t srikanthhg/backend:${appVersion} .'
                     docker.build("backend:${appVersion}")
                 }
             }
@@ -113,7 +113,7 @@ pipeline {
         stage('Image scan') {
             steps {
                 //sh 'trivy image --format template --template "@contrib/gitlab.tpl" -o container-scanning-report.html srikanthhg/backend:${appVersion}'
-                sh 'trivy image --format table srikanthhg/$JOB_BASE_NAME:${appVersion}'
+                sh "trivy image --format table srikanthhg/$JOB_BASE_NAME:${appVersion}"
             }
         }
         // stage('push image to dockerhub') {
@@ -141,7 +141,7 @@ pipeline {
     post {
         always{
             echo "This sections runs always"
-            //deleteDir()
+            deleteDir()
         }
         success{
             echo "This section run when pipeline success"
