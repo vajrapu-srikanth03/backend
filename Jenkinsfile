@@ -106,7 +106,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image sh 'docker build -t srikanthhg/backend:${appVersion} .'
-                    docker.build("backend:${appVersion}")
+                    docker.build("srikanthhg/backend:${appVersion}")
                 }
             }
         }
@@ -116,11 +116,17 @@ pipeline {
                 sh "trivy image --format table srikanthhg/$JOB_BASE_NAME:${appVersion}"
             }
         }
-        // stage('push image to dockerhub') {
-        //     steps {
-        //         sh 'docker push srikanthhg/$JOB_BASE_NAME:${appVersion}'
-        //     }
-        // }
+        stage('push image to dockerhub') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKERHUB')]) {
+                        docker login -u srikanthhg -p ${DOCKERHUB}
+                        docker.push()
+                    }
+                }
+                //sh 'docker push srikanthhg/$JOB_BASE_NAME:${appVersion}'
+            }
+        }
         // stage('push image to AWS ECR') {
         //     steps {
         //         withAWS(region: 'us-east-1', credentials: 'aws-ecr') {
