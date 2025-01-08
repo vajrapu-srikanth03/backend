@@ -119,9 +119,8 @@ pipeline {
         stage('push image to dockerhub') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKERHUB')]) {
-                        docker login -u srikanthhg -p ${DOCKERHUB}
-                        customImage.push()
+                    withDockerRegistry([credentialsId: 'dockerhub', toolName: 'docker']) {
+                    customImage.push("${appVersion}")
                     }
                 }
                 //sh 'docker push srikanthhg/$JOB_BASE_NAME:${appVersion}'
