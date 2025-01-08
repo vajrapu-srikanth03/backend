@@ -120,8 +120,7 @@ pipeline {
         stage('push image to dockerhub') {
             steps {
                 script {
-                    sh "echo ${DOCKER_TOKEN} | docker login --username srikanthhg --password-stdin"
-                    {
+                    withDockerRegistry(credentialsId: 'docker-auth', toolName: 'docker') {
                     customImage.push("${appVersion}")
                     }
                 }
