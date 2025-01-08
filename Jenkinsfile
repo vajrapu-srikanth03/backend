@@ -121,7 +121,7 @@ pipeline {
             steps {
                 script {
                     
-                    withDockerRegistry(credentialsId: 'dockerhub3', toolName: 'docker', url: 'hub.docker.com') {
+                    withDockerRegistry(credentialsId: 'dockerhub3', toolName: 'docker') {
                     customImage.push("${appVersion}")
                     }
                 }
