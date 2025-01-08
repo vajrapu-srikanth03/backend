@@ -22,6 +22,7 @@ pipeline {
         project='expense'
         environment='dev'
         component = 'backend'
+        def customImage = ''
         //SONAR_HOME= tool 'sonar-6.2' // scanner configuration servername and scanner name both should be same
         //PATH = "/usr/bin:${env.PATH}"  // Force the pipeline to use /usr/bin/git
     
@@ -106,7 +107,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image sh 'docker build -t srikanthhg/backend:${appVersion} .'
-                    def customImage = docker.build("srikanthhg/backend:${appVersion}")
+                    customImage = docker.build("srikanthhg/backend:${appVersion}")
                 }
             }
         }
@@ -120,7 +121,7 @@ pipeline {
             steps {
                 script {
                     
-                    withDockerRegistry(credentialsId: 'dockerhub3', toolName: 'docker') {
+                    withDockerRegistry(credentialsId: 'dockerhub3', toolName: 'docker', url: 'hub.docker.com') {
                     customImage.push("${appVersion}")
                     }
                 }
