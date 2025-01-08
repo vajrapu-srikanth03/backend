@@ -119,7 +119,8 @@ pipeline {
         stage('push image to dockerhub') {
             steps {
                 script {
-                    withDockerRegistry([credentialsId: 'dockerhub', toolName: 'docker']) {
+                    
+                    withDockerRegistry(credentialsId: 'dockerhub3', toolName: 'docker') {
                     customImage.push("${appVersion}")
                     }
                 }
