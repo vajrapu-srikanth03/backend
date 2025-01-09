@@ -103,6 +103,13 @@ pipeline {
                 }
             }
         }
+        stage('Build zip') {
+            steps {
+                script {
+                    sh 'zip -r backend.zip Dockerfile package.json TransactionService.js index.js schema/'
+                }
+            }
+        }
         stage('Docker build') { //docker and docker pipeline plugins should be installed
             steps {
                 script {
