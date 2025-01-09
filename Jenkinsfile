@@ -103,11 +103,11 @@ pipeline {
                 }
             }
         }
-        stage('Docker build') {
+        stage('Docker build') { //docker and docker pipeline plugins should be installed
             steps {
                 script {
                     // Build the Docker image sh 'docker build -t srikanthhg/backend:${appVersion} .'
-                    customImage = docker.build("srikanthhg/backend:${appVersion}")
+                    customImage = docker.build("srikanthhg/$JOB_BASE_NAME:${appVersion}")
                 }
             }
         }
