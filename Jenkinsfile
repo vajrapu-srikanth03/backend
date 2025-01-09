@@ -54,7 +54,7 @@ pipeline {
         // stage('SonarQube Code Analysis'){
         //     steps{
         //          // sonar server injection
-        //         withSonarQubeEnv('sonar-6.2'){
+        //         withSonarQubeEnv('sonar'){ //server name
         //             sh '$SONAR_HOME/bin/sonar-scanner'
         //             //generic scanner, it automatically understands the language and provide scan results
         //         }
