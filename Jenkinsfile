@@ -105,9 +105,7 @@ pipeline {
         }
         stage('Build zip') {
             steps {
-                script {
                     sh "zip -q -r ${JOB_BASE_NAME}.zip Dockerfile package.json TransactionService.js index.js schema/ -x ".git" -x "*.gitignore" "
-                }
             }
         }
         stage('Docker build') { //docker and docker pipeline plugins should be installed
