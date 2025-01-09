@@ -95,7 +95,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('npm Build') {
             steps {
                 script {
                     // Transpile TypeScript, bundle with Webpack, or other build tools
@@ -106,7 +106,7 @@ pipeline {
         stage('Build zip') {
             steps {
                 script {
-                    sh 'zip -r backend.zip Dockerfile package.json TransactionService.js index.js schema/'
+                    sh "zip -q -r ${JOB_BASE_NAME}.zip Dockerfile package.json TransactionService.js index.js schema/ -x ".git" -x "*.gitignore" "
                 }
             }
         }
@@ -134,15 +134,15 @@ pipeline {
                 //sh 'docker push srikanthhg/$JOB_BASE_NAME:${appVersion}'
             }
         }
-        // stage('push image to AWS ECR') {
-        //     steps {
-        //         withAWS(region: 'us-east-1', credentials: 'aws-ecr') {
-        //             sh 'aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.us-east-1.amazonaws.com'
-        //             sh 'docker tag srikanthhg/$JOB_BASE_NAME:${appVersion} ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}'
-        //             sh 'docker push ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}'
-        //         }
-        //     }
-        // }
+        stage('push image to AWS ECR') { // AWS Credentials should be configured in Jenkins
+            steps {
+                withAWS(region: 'us-east-1', credentials: 'aws-ecr') {
+                    sh 'aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker tag srikanthhg/$JOB_BASE_NAME:${appVersion} ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}'
+                    sh 'docker push ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}'
+                }
+            }
+        }
         // stage('push image to Azure ACR') {
         //     steps {
         //         withCredentials([usernamePassword(credentialsId: 'azure-acr', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
