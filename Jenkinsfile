@@ -126,18 +126,18 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-auth', toolName: 'docker') {
-                    customImage.push("${appVersion}")
+                    customImage.push()
                     }
                 }
                 //sh 'docker push srikanthhg/$JOB_BASE_NAME:${appVersion}'
             }
         }
-        stage('push image to AWS ECR') { // AWS Credentials should be configured in Jenkins
+        stage('push image to AWS ECR') { // AWS Credentials, AWS Steps plugins should be configured in Jenkins
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-ecr') {
-                    sh 'aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.us-east-1.amazonaws.com'
-                    sh 'docker tag srikanthhg/$JOB_BASE_NAME:${appVersion} ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}'
-                    sh 'docker push ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}'
+                    sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.us-east-1.amazonaws.com"
+                    sh "docker tag srikanthhg/$JOB_BASE_NAME:${appVersion} ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}"
+                    sh "docker push ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${project}/$JOB_BASE_NAME:${appVersion}"
                 }
             }
         }
