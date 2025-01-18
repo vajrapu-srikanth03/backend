@@ -3,7 +3,8 @@
 def config = [
     application: "nodejs",
     component: "backend",
-    REPO_URL: "https://github.com/vajrapu-srikanth03/backend.git"
+    REPO_URL: "https://github.com/vajrapu-srikanth03/backend.git",
+    region : "us-east-1"
 ]
 
 // Manually set BRANCH_NAME for testing purposes
